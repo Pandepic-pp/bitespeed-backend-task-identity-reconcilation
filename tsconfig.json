@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    /* Language & Environment */
+    "target": "ES2020",             // Modern JS syntax
+    "module": "CommonJS",           // Best for Node.js
+    "lib": ["ES2020"],               // Language features
+
+    /* Project Structure */
+    "rootDir": "src",               // Your .ts files
+    "outDir": "dist",               // Compiled .js output
+
+    /* Type Safety */
+    "strict": true,                 // Enable all strict checks
+    "esModuleInterop": true,        // Allow import/export without headaches
+    "forceConsistentCasingInFileNames": true,
+
+    /* Performance & Compatibility */
+    "skipLibCheck": true            // Skip type checking in node_modules
+  },
+  "include": ["src"],               // Include all files in src/
+  "exclude": ["node_modules"]       // Don't compile dependencies
+}
