@@ -7,14 +7,40 @@ It is built using **Node.js, Express, TypeScript, and PostgreSQL**.
 
 ---
 
+### 🔍 Edge Case Handling
+
+**Scenario:**
+
+1. `POST {"email": "abc@xyz.com", "phoneNumber": "123456"}`  
+   → Creates **Primary Record** (id = 1).
+
+2. `POST {"email": "def@xyz.com", "phoneNumber": "123456"}`  
+   → Creates **Secondary Record** (id = 2) linked to id = 1 (since phone number already exists).
+
+3. `POST {"email": "def@xyz.com", "phoneNumber": "123457"}`  
+   → A new phone number, so a **new Record** (id = 3) is created.
+
+**The Confusion:**  
+- Record 2 already exists with the same email as Record 3.  
+- Should Record 2 or 3 be promoted to Primary?  
+- Or should everything still resolve back to Record 1 (the original Primary)?
+
+**My Approach & Resolution:**  
+- **A Primary should never be demoted** unless there’s a strong reason.  
+- Whenever a new record matches an **existing secondary**, it should **still link back to the original Primary**.  
+- In this case, Record 3 (same email as Record 2) is linked back to Primary Record 1, keeping identity reconciliation consistent.  
+- This avoids conflicts where multiple primaries could exist for the same identity.
+
+✅ **Final Decision:**  
+All new records that overlap with any secondary must ultimately resolve to the **first/original primary**.  
+This ensures a single source of truth for each identity and prevents fragmented identity chains.
+
 ## 🚀 Features
 - Identify and reconcile customer contacts by **email** and **phone number**.
 - Maintain a **primary contact** with multiple linked **secondary contacts**.
 - Automatically merge contacts if duplicates are found.
 - Built with **TypeScript** for type safety.
 - PostgreSQL as the database.
-
----
 
 ## ⚙️ Setup & Installation
 
